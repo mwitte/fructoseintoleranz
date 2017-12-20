@@ -1,0 +1,2081 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Matthias Witte">
+  <title>Fruktoseintoleranz Tabelle</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+
+
+
+
+
+  <style>
+    .good {
+      color: #2B803E;
+    }
+    .middle {
+      color: #F3BF52;
+    }
+    .bad {
+      color: #CC3829;
+    }
+    .hidden {
+      display: none;
+    }
+    th {
+      white-space: nowrap;
+    }
+    body {
+
+    }
+     h1 {
+      font-size: 1.5rem;
+    }
+
+    .sort .order {
+      display: none;
+    }
+    .sort.asc .order.fa-angle-down {
+      display: inline-block;
+    }
+    .sort.desc .order.fa-angle-up {
+      display: inline-block;
+    }
+  </style>
+
+</head>
+<body contenteditable="false">
+
+
+<div id="food">
+  <h1>Fruktoseinteroleranz Tabelle</h1>
+  <input class="search form-control" placeholder="Filter nach Produktname" />
+
+  <table style="width: 100%;" class="table table-responsive-sm table-striped" cellspacing="0" cellpadding="0" border="0">
+    <thead class="thead-light">
+    <tr>
+      <th class="sort asc" data-sort="name">
+        Produkt <i class="order fas fa-angle-down"></i> <i class="order fas fa-angle-up"></i>
+      </th>
+      <th class="sort" data-sort="kp">
+        KP <i class="order fas fa-angle-down"></i> <i class="order fas fa-angle-up"></i>
+      </th>
+      <th class="sort" data-sort="de">
+        DE <i class="order fas fa-angle-down"></i> <i class="order fas fa-angle-up"></i>
+      </th>
+      <th>
+        <span class="font-weight-light">FRU</span>
+      </th>
+      <th>
+        <span class="font-weight-light">GLU</span>
+      </th>
+      <th>
+        <span class="font-weight-light">F/G</span>
+      </th>
+    </tr>
+    </thead>
+    <tbody class="list">
+    <!--{{#items}}-->
+      <tr>
+        <td class="name">{{name}}</td>
+        <td class="kp" data-kp="{{kp}}">
+          {{#kpGood}}
+            <i class="fas fa-lg fa-thumbs-up good"></i>
+          {{/kpGood}}
+          {{#kpMedium}}
+            <i title="0" class="fas fa-lg fa-thumbs-down middle" data-fa-transform="rotate-90"></i>
+          {{/kpMedium}}
+          {{#kpBad}}
+            <i class="fas fa-lg fa-thumbs-down bad"></i>
+          {{/kpBad}}
+        </td>
+        <td class="de" data-de="{{de}}">
+          {{#deGood}}
+          <i class="fas fa-lg fa-thumbs-up good"></i>
+          {{/deGood}}
+          {{#deMedium}}
+          <i title="0" class="fas fa-lg fa-thumbs-down middle" data-fa-transform="rotate-90"></i>
+          {{/deMedium}}
+          {{#deBad}}
+          <i class="fas fa-lg fa-thumbs-down bad"></i>
+          {{/deBad}}
+        </td>
+        <td>{{fru}}</td>
+        <td>{{glu}}</td>
+        <td>{{fg}}</td>
+      </tr>
+    <!--{{/items}}-->
+
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript" class="init">
+
+  var food = [
+      {
+          "name": "Acerolakirsche",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,9",
+          "glu": "1,6",
+          "fg": "1,2"
+      },
+      {
+          "name": "Agavensirup (Durchschnitt)",
+          "kp": "1",
+          "de": "1",
+          "fru": "55,6",
+          "glu": "12,4",
+          "fg": "4,5"
+      },
+      {
+          "name": "Ahornsirup (Durchschnitt)",
+          "kp": "1",
+          "de": 0,
+          "fru": "29,8",
+          "glu": "30,1",
+          "fg": "1"
+      },
+      {
+          "name": "Alfalfa",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,1",
+          "glu": "0,1",
+          "fg": "1,8"
+      },
+      {
+          "name": "Amarant",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,8",
+          "glu": "0,8",
+          "fg": "1"
+      },
+      {
+          "name": "Ananas",
+          "kp": "1",
+          "de": "1",
+          "fru": "5,1",
+          "glu": "4,7",
+          "fg": "1,1"
+      },
+      {
+          "name": "Apfel (Durchschnitt)",
+          "kp": "1",
+          "de": "1",
+          "fru": "6,9",
+          "glu": "3,4",
+          "fg": "2"
+      },
+      {
+          "name": "Apfelessig",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Aprikose (Marille)",
+          "kp": "1",
+          "de": 0,
+          "fru": "3,5",
+          "glu": "4,5",
+          "fg": "0,8"
+      },
+      {
+          "name": "Aprikose, getrocknet",
+          "kp": "1",
+          "de": "1",
+          "fru": "16,4",
+          "glu": "37",
+          "fg": "0,4"
+      },
+      {
+          "name": "Artischocke",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,7",
+          "glu": "0,8",
+          "fg": "2,3"
+      },
+      {
+          "name": "Aubergine (Melanzani)",
+          "kp": "1",
+          "de": 0,
+          "fru": "1,2",
+          "glu": "1,2",
+          "fg": "1"
+      },
+      {
+          "name": "Austern",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Austernpilz",
+          "kp": "1",
+          "de": "1",
+          "fru": "0,1",
+          "glu": "0,1",
+          "fg": "1"
+      },
+      {
+          "name": "Avocado",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,2",
+          "glu": "0,3",
+          "fg": "0,5"
+      },
+      {
+          "name": "Balsamico (Durchschnitt)",
+          "kp": "1",
+          "de": "1",
+          "fru": "7,4",
+          "glu": "7,6",
+          "fg": "1"
+      },
+      {
+          "name": "Bambussprossen",
+          "kp": 0,
+          "de": -1,
+          "fru": "0,5",
+          "glu": "0,5",
+          "fg": "1,1"
+      },
+      {
+          "name": "Banane",
+          "kp": "1",
+          "de": 0,
+          "fru": "7,2",
+          "glu": "7,4",
+          "fg": "1"
+      },
+      {
+          "name": "Bärlauch",
+          "kp": "1",
+          "de": 0,
+          "fru": "1,5",
+          "glu": "1,4",
+          "fg": "1,1"
+      },
+      {
+          "name": "Basilikum, frisch",
+          "kp": -1,
+          "de": -1,
+          "fru": "-",
+          "glu": "0",
+          "fg": "0"
+      },
+      {
+          "name": "Beinschinken (Durchschnitt)",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Märzen Bier (Durchschnitt)",
+          "kp": "1",
+          "de": 0,
+          "fru": "0",
+          "glu": "0",
+          "fg": "2"
+      },
+      {
+          "name": "Birne (Durchschnitt)",
+          "kp": "1",
+          "de": "1",
+          "fru": "7,2",
+          "glu": "2,8",
+          "fg": "2,6"
+      },
+      {
+          "name": "Blaukraut",
+          "kp": 0,
+          "de": 0,
+          "fru": "1,5",
+          "glu": "1,9",
+          "fg": "0,8"
+      },
+      {
+          "name": "Blumenkohl",
+          "kp": 0,
+          "de": 0,
+          "fru": "0,9",
+          "glu": "1",
+          "fg": "0,9"
+      },
+      {
+          "name": "Bohnen (aus der Dose, Durchschnitt)",
+          "kp": "1",
+          "de": 0,
+          "fru": "1,2",
+          "glu": "1",
+          "fg": "1,2"
+      },
+      {
+          "name": "Brasilianische Guave",
+          "kp": "1",
+          "de": "1",
+          "fru": "4,4",
+          "glu": "3,8",
+          "fg": "1,2"
+      },
+      {
+          "name": "Brie",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Broccoli",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,1",
+          "glu": "0,7",
+          "fg": "1,7"
+      },
+      {
+          "name": "Brombeere",
+          "kp": "1",
+          "de": 0,
+          "fru": "3,2",
+          "glu": "3,1",
+          "fg": "1"
+      },
+      {
+          "name": "Brunnenkresse",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,5",
+          "glu": "0,1",
+          "fg": "5"
+      },
+      {
+          "name": "Buchweizen",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,2",
+          "glu": "0,2",
+          "fg": "1"
+      },
+      {
+          "name": "Butter",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Buttermilch",
+          "kp": -1,
+          "de": -1,
+          "fru": "-",
+          "glu": "-",
+          "fg": "-"
+      },
+      {
+          "name": "Camembert",
+          "kp": -1,
+          "de": -1,
+          "fru": "-",
+          "glu": "-",
+          "fg": "-"
+      },
+      {
+          "name": "Cashew, roh",
+          "kp": "1",
+          "de": 0,
+          "fru": "2,9",
+          "glu": "3",
+          "fg": "1"
+      },
+      {
+          "name": "Champagner",
+          "kp": "1",
+          "de": 0,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Champignon",
+          "kp": 0,
+          "de": -1,
+          "fru": "0,3",
+          "glu": "0,3",
+          "fg": "1"
+      },
+      {
+          "name": "Cheddar",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Cherimoya",
+          "kp": "1",
+          "de": "1",
+          "fru": "6,6",
+          "glu": "6,3",
+          "fg": "1,1"
+      },
+      {
+          "name": "Chesterkäse",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0,3",
+          "fg": "0"
+      },
+      {
+          "name": "Chia Samen (Durchschnitt)",
+          "kp": -1,
+          "de": -1,
+          "fru": "-",
+          "glu": "-",
+          "fg": "-"
+      },
+      {
+          "name": "Chicoreé",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,9",
+          "glu": "1,5",
+          "fg": "0,6"
+      },
+      {
+          "name": "Chinakohl",
+          "kp": 0,
+          "de": -1,
+          "fru": "0,6",
+          "glu": "0,7",
+          "fg": "0,8"
+      },
+      {
+          "name": "Cola (Durchschnitt)",
+          "kp": "1",
+          "de": "1",
+          "fru": "5",
+          "glu": "5",
+          "fg": "1"
+      },
+      {
+          "name": "Cola light (Durchschnitt)",
+          "kp": 0,
+          "de": 0,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Cranberry",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,7",
+          "glu": "3,3",
+          "fg": "0,2"
+      },
+      {
+          "name": "Cranberry Muttersaft / Direktsaft",
+          "kp": -1,
+          "de": -1,
+          "fru": "-",
+          "glu": "-",
+          "fg": ""
+      },
+      {
+          "name": "Dattel",
+          "kp": "1",
+          "de": "1",
+          "fru": "31",
+          "glu": "34",
+          "fg": "0,9"
+      },
+      {
+          "name": "Dattel, getrocknet",
+          "kp": "1",
+          "de": "1",
+          "fru": "31,7",
+          "glu": "31,8",
+          "fg": "1"
+      },
+      {
+          "name": "Dessertwein, süß (Durchschnitt)",
+          "kp": "1",
+          "de": "1",
+          "fru": "2,5",
+          "glu": "2,6",
+          "fg": "1"
+      },
+      {
+          "name": "Dinkel, Korn",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,5",
+          "glu": "1,1",
+          "fg": "0,5"
+      },
+      {
+          "name": "Dorsch",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Edamerkäse",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Eigelb",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0,2",
+          "fg": "0,2"
+      },
+      {
+          "name": "Eisbergsalat",
+          "kp": 0,
+          "de": -1,
+          "fru": "1",
+          "glu": "0,9",
+          "fg": "1,1"
+      },
+      {
+          "name": "Eiweiß",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0,4",
+          "fg": "0,1"
+      },
+      {
+          "name": "Emmentaler Käse",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Energydrink mit Zucker (Durchschnitt)",
+          "kp": "1",
+          "de": "1",
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Energydrink zuckerfrei (Durchschnitt)",
+          "kp": "1",
+          "de": "1",
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Erbsen (Durchschnitt)",
+          "kp": "1",
+          "de": 0,
+          "fru": "3,1",
+          "glu": "3,1",
+          "fg": "1"
+      },
+      {
+          "name": "Erdbeere",
+          "kp": "1",
+          "de": 0,
+          "fru": "2,9",
+          "glu": "2,7",
+          "fg": "1"
+      },
+      {
+          "name": "Erdnüsse",
+          "kp": "1",
+          "de": 0,
+          "fru": "1,3",
+          "glu": "1,3",
+          "fg": "1"
+      },
+      {
+          "name": "Essiggurke (Durchschnitt)",
+          "kp": 0,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Esskastanien",
+          "kp": "1",
+          "de": 0,
+          "fru": "5,7",
+          "glu": "5,7",
+          "fg": "1"
+      },
+      {
+          "name": "Feige",
+          "kp": "1",
+          "de": 0,
+          "fru": "5,9",
+          "glu": "7,2",
+          "fg": "0,8"
+      },
+      {
+          "name": "Feige, getrocknet",
+          "kp": "1",
+          "de": "1",
+          "fru": "26,5",
+          "glu": "28,7",
+          "fg": "0,9"
+      },
+      {
+          "name": "Feldsalat",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,3",
+          "glu": "0,5",
+          "fg": "0,6"
+      },
+      {
+          "name": "Fenchel",
+          "kp": -1,
+          "de": -1,
+          "fru": "1,3",
+          "glu": "1,5",
+          "fg": "0,9"
+      },
+      {
+          "name": "Feta",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Forelle",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Früchtetee (Durchschnitt)",
+          "kp": "1",
+          "de": 0,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Grana Padano",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Granatapfel",
+          "kp": "1",
+          "de": 0,
+          "fru": "8,5",
+          "glu": "7,9",
+          "fg": "1,1"
+      },
+      {
+          "name": "Grapefruit",
+          "kp": "1",
+          "de": 0,
+          "fru": "3,5",
+          "glu": "3,4",
+          "fg": "1"
+      },
+      {
+          "name": "Große Sapote",
+          "kp": "1",
+          "de": "1",
+          "fru": "9,7",
+          "glu": "10,1",
+          "fg": "1"
+      },
+      {
+          "name": "Grüne Bohnen",
+          "kp": 0,
+          "de": 0,
+          "fru": "1,7",
+          "glu": "1,2",
+          "fg": "1,4"
+      },
+      {
+          "name": "Grünkohl",
+          "kp": 0,
+          "de": 0,
+          "fru": "1,4",
+          "glu": "1,2",
+          "fg": "1,2"
+      },
+      {
+          "name": "Guave",
+          "kp": "1",
+          "de": "1",
+          "fru": "3,7",
+          "glu": "2,2",
+          "fg": "1,7"
+      },
+      {
+          "name": "Gurke",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,9",
+          "glu": "0,8",
+          "fg": "1,1"
+      },
+      {
+          "name": "Hafer",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,4",
+          "glu": "0,4",
+          "fg": "1"
+      },
+      {
+          "name": "Haselnuss",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,6",
+          "glu": "1,6",
+          "fg": "1"
+      },
+      {
+          "name": "Hefe",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Hefeextrakt",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Heidelbeere",
+          "kp": "1",
+          "de": 0,
+          "fru": "4,2",
+          "glu": "3,8",
+          "fg": "1,1"
+      },
+      {
+          "name": "Hering",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Himbeere",
+          "kp": "1",
+          "de": 0,
+          "fru": "3,1",
+          "glu": "2,5",
+          "fg": "1,2"
+      },
+      {
+          "name": "Hirse (Durchschnitt)",
+          "kp": 0,
+          "de": -1,
+          "fru": "0,2",
+          "glu": "1,4",
+          "fg": "0,1"
+      },
+      {
+          "name": "Honig",
+          "kp": "1",
+          "de": "1",
+          "fru": "40,2",
+          "glu": "35,2",
+          "fg": "1,1"
+      },
+      {
+          "name": "Honigmelone",
+          "kp": "1",
+          "de": 0,
+          "fru": "4,2",
+          "glu": "3,9",
+          "fg": "1,1"
+      },
+      {
+          "name": "Hühnerfleisch",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Hüttenkäse",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Ingwer",
+          "kp": 0,
+          "de": -1,
+          "fru": "4,5",
+          "glu": "4,5",
+          "fg": "1"
+      },
+      {
+          "name": "Jackfruit",
+          "kp": "1",
+          "de": 0,
+          "fru": "9,4",
+          "glu": "9,7",
+          "fg": "1"
+      },
+      {
+          "name": "Jalapeño Paprika",
+          "kp": "1",
+          "de": -1,
+          "fru": "2,6",
+          "glu": "1,5",
+          "fg": "1,8"
+      },
+      {
+          "name": "Japanische Mispel",
+          "kp": "1",
+          "de": "1",
+          "fru": "4,6",
+          "glu": "4,8",
+          "fg": "1"
+      },
+      {
+          "name": "Johannisbeere, rot",
+          "kp": "1",
+          "de": "1",
+          "fru": "3,8",
+          "glu": "3,5",
+          "fg": "1,1"
+      },
+      {
+          "name": "Johannisbeere, schwarz",
+          "kp": "1",
+          "de": "1",
+          "fru": "3,3",
+          "glu": "3,3",
+          "fg": "1"
+      },
+      {
+          "name": "Kaffee",
+          "kp": 0,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Kakao, rein",
+          "kp": 0,
+          "de": 0,
+          "fru": "1,1",
+          "glu": "1,1",
+          "fg": "1"
+      },
+      {
+          "name": "Kaki",
+          "kp": "1",
+          "de": "1",
+          "fru": "10",
+          "glu": "9",
+          "fg": "1,1"
+      },
+      {
+          "name": "Kaktusfeige (Durchschnitt) - Angaben uneindeutig!",
+          "kp": "1",
+          "de": "1",
+          "fru": "4,6",
+          "glu": "5,6",
+          "fg": "0,8"
+      },
+      {
+          "name": "Kamelmilch",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Kartoffel (Durchschnitt)",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,4",
+          "glu": "0,5",
+          "fg": "0,8"
+      },
+      {
+          "name": "Kichererbse",
+          "kp": 0,
+          "de": 0,
+          "fru": "0,1",
+          "glu": "0,1",
+          "fg": "1"
+      },
+      {
+          "name": "Kiwi",
+          "kp": "1",
+          "de": 0,
+          "fru": "5,2",
+          "glu": "5,1",
+          "fg": "1"
+      },
+      {
+          "name": "Knoblauch (geringe Verzehrmengen in DE verträglich)",
+          "kp": "1",
+          "de": 0,
+          "fru": "4,9",
+          "glu": "3,8",
+          "fg": "1,3"
+      },
+      {
+          "name": "Kohlrabi",
+          "kp": 0,
+          "de": 0,
+          "fru": "1,8",
+          "glu": "1,9",
+          "fg": "0,9"
+      },
+      {
+          "name": "Kokosmilch (Durchschnitt)",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,5",
+          "glu": "1,7",
+          "fg": "0,9"
+      },
+      {
+          "name": "Kokosnuss, ganz",
+          "kp": 0,
+          "de": 0,
+          "fru": "2,3",
+          "glu": "2,5",
+          "fg": "0,9"
+      },
+      {
+          "name": "Korn",
+          "kp": "1",
+          "de": -1,
+          "fru": "-",
+          "glu": "-",
+          "fg": "-"
+      },
+      {
+          "name": "Kürbis (Butternuss)",
+          "kp": 0,
+          "de": -1,
+          "fru": "0,8",
+          "glu": "1,1",
+          "fg": "0,7"
+      },
+      {
+          "name": "Kürbis (Durchschnitt)",
+          "kp": 0,
+          "de": -1,
+          "fru": "1",
+          "glu": "0,8",
+          "fg": "1,3"
+      },
+      {
+          "name": "Kürbis (Hokkaido)",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,4",
+          "glu": "1,6",
+          "fg": "0,9"
+      },
+      {
+          "name": "Kürbis (Hubbard)",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,5",
+          "glu": "1,8",
+          "fg": "0,8"
+      },
+      {
+          "name": "Kürbis (Spaghetti)",
+          "kp": 0,
+          "de": -1,
+          "fru": "-",
+          "glu": "-",
+          "fg": "-"
+      },
+      {
+          "name": "Kürbiskerne, getrocknet",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,7",
+          "glu": "0,7",
+          "fg": "1"
+      },
+      {
+          "name": "Kurkuma, gemahlen",
+          "kp": -1,
+          "de": -1,
+          "fru": "1,6",
+          "glu": "1,6",
+          "fg": "1"
+      },
+      {
+          "name": "Lachs",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Leber, Rind",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Leinsamen",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,6",
+          "glu": "1",
+          "fg": "0,6"
+      },
+      {
+          "name": "Limabohne",
+          "kp": "1",
+          "de": 0,
+          "fru": "0,5",
+          "glu": "0,1",
+          "fg": "7,1"
+      },
+      {
+          "name": "Limetten",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,1",
+          "glu": "1,1",
+          "fg": "1"
+      },
+      {
+          "name": "Linsen",
+          "kp": "1",
+          "de": 0,
+          "fru": "1",
+          "glu": "0,7",
+          "fg": "1,4"
+      },
+      {
+          "name": "Litchi",
+          "kp": "1",
+          "de": "1",
+          "fru": "7,7",
+          "glu": "9,3",
+          "fg": "0,8"
+      },
+      {
+          "name": "Löwenzahnblätter",
+          "kp": 0,
+          "de": -1,
+          "fru": "0,8",
+          "glu": "1,5",
+          "fg": "0,5"
+      },
+      {
+          "name": "Macadamianuss, roh",
+          "kp": "1",
+          "de": 0,
+          "fru": "-",
+          "glu": "2,3",
+          "fg": "0"
+      },
+      {
+          "name": "Magermilch",
+          "kp": 0,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Magermilchpulver",
+          "kp": 0,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Mais (Dose)",
+          "kp": "1",
+          "de": 0,
+          "fru": "2,9",
+          "glu": "3,1",
+          "fg": "0,9"
+      },
+      {
+          "name": "Mais am Kolben, gegart",
+          "kp": "1",
+          "de": 0,
+          "fru": "1,1",
+          "glu": "1,2",
+          "fg": "0,9"
+      },
+      {
+          "name": "Malzbier (Durchschnitt)",
+          "kp": "1",
+          "de": "1",
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Mandarine",
+          "kp": "1",
+          "de": 0,
+          "fru": "5",
+          "glu": "4,7",
+          "fg": "1,1"
+      },
+      {
+          "name": "Mandeln, roh",
+          "kp": 0,
+          "de": 0,
+          "fru": "2,1",
+          "glu": "2,1",
+          "fg": "1"
+      },
+      {
+          "name": "Mango",
+          "kp": "1",
+          "de": "1",
+          "fru": "8,2",
+          "glu": "5,5",
+          "fg": "1,5"
+      },
+      {
+          "name": "Mangold",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,4",
+          "glu": "0,3",
+          "fg": "1,2"
+      },
+      {
+          "name": "Meerrettich",
+          "kp": "1",
+          "de": 0,
+          "fru": "3,5",
+          "glu": "4,8",
+          "fg": "0,7"
+      },
+      {
+          "name": "Milch, fettarm",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Mohn, Samen",
+          "kp": -1,
+          "de": -1,
+          "fru": "1,5",
+          "glu": "1,5",
+          "fg": "0,9"
+      },
+      {
+          "name": "Möhre (Karotte)",
+          "kp": 0,
+          "de": -1,
+          "fru": "2,4",
+          "glu": "2,5",
+          "fg": "1"
+      },
+      {
+          "name": "Molke",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Molkenpulver",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Mozzarella",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Natur Joghurt md. 3,5% Fett",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Nektarine",
+          "kp": "1",
+          "de": 0,
+          "fru": "3,8",
+          "glu": "3,9",
+          "fg": "1"
+      },
+      {
+          "name": "Nudeln (Durchschnitt)",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,1",
+          "glu": "0,1",
+          "fg": "0,9"
+      },
+      {
+          "name": "Obstler, klar",
+          "kp": "1",
+          "de": 0,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Okra, frisch",
+          "kp": 0,
+          "de": -1,
+          "fru": "0,9",
+          "glu": "0,6",
+          "fg": "1,4"
+      },
+      {
+          "name": "Oliven (eingelegt)",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,3",
+          "glu": "0,3",
+          "fg": "1"
+      },
+      {
+          "name": "Orange",
+          "kp": "1",
+          "de": 0,
+          "fru": "4,4",
+          "glu": "4,3",
+          "fg": "1"
+      },
+      {
+          "name": "Oregano, frisch",
+          "kp": -1,
+          "de": -1,
+          "fru": "1,6",
+          "glu": "2,4",
+          "fg": "0,7"
+      },
+      {
+          "name": "Papaya",
+          "kp": 0,
+          "de": 0,
+          "fru": "3",
+          "glu": "2,9",
+          "fg": "1"
+      },
+      {
+          "name": "Paprika, gelb",
+          "kp": "1",
+          "de": 0,
+          "fru": "2,2",
+          "glu": "2,6",
+          "fg": "0,8"
+      },
+      {
+          "name": "Paprika, grün",
+          "kp": "1",
+          "de": 0,
+          "fru": "1,4",
+          "glu": "1,5",
+          "fg": "0,9"
+      },
+      {
+          "name": "Paprika, rot",
+          "kp": "1",
+          "de": 0,
+          "fru": "3",
+          "glu": "2,7",
+          "fg": "1,1"
+      },
+      {
+          "name": "Parmesan",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Pastinake",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,5",
+          "glu": "1,5",
+          "fg": "1"
+      },
+      {
+          "name": "Pekannuss, roh",
+          "kp": "1",
+          "de": 0,
+          "fru": "-",
+          "glu": "2",
+          "fg": "0"
+      },
+      {
+          "name": "Petersilie Blatt",
+          "kp": -1,
+          "de": -1,
+          "fru": "2,4",
+          "glu": "2,7",
+          "fg": "0,9"
+      },
+      {
+          "name": "Petersilie Wurzel",
+          "kp": 0,
+          "de": -1,
+          "fru": "0,7",
+          "glu": "0,6",
+          "fg": "1,2"
+      },
+      {
+          "name": "Pfeffer",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,2",
+          "glu": "0,3",
+          "fg": "1"
+      },
+      {
+          "name": "Pferdemilch",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Pfifferling, Eierschwamm",
+          "kp": 0,
+          "de": -1,
+          "fru": "0,1",
+          "glu": "0,1",
+          "fg": "0,7"
+      },
+      {
+          "name": "Pfirsich",
+          "kp": "1",
+          "de": 0,
+          "fru": "4",
+          "glu": "4,1",
+          "fg": "1"
+      },
+      {
+          "name": "Pflaume",
+          "kp": "1",
+          "de": "1",
+          "fru": "3,9",
+          "glu": "5,2",
+          "fg": "0,7"
+      },
+      {
+          "name": "Pflaume, getrocknet",
+          "kp": "1",
+          "de": "1",
+          "fru": "12,5",
+          "glu": "25,5",
+          "fg": "0,5"
+      },
+      {
+          "name": "Pistazien, roh",
+          "kp": "1",
+          "de": 0,
+          "fru": "3,7",
+          "glu": "3,8",
+          "fg": "1"
+      },
+      {
+          "name": "Porree",
+          "kp": "1",
+          "de": -1,
+          "fru": "1,7",
+          "glu": "1,5",
+          "fg": "1,1"
+      },
+      {
+          "name": "Preiselbeere",
+          "kp": "1",
+          "de": 0,
+          "fru": "3,1",
+          "glu": "2,1",
+          "fg": "1,5"
+      },
+      {
+          "name": "Quinoa",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,9",
+          "glu": "0,9",
+          "fg": "1"
+      },
+      {
+          "name": "Quitte",
+          "kp": "1",
+          "de": 0,
+          "fru": "4,9",
+          "glu": "3,2",
+          "fg": "1,5"
+      },
+      {
+          "name": "Radieschen",
+          "kp": 0,
+          "de": 0,
+          "fru": "0,8",
+          "glu": "1,4",
+          "fg": "0,6"
+      },
+      {
+          "name": "Reis, poliert, weiß",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,1",
+          "glu": "0,1",
+          "fg": "1,2"
+      },
+      {
+          "name": "Reismilch, ungesüßt",
+          "kp": "1",
+          "de": 0,
+          "fru": "2,2",
+          "glu": "2,2",
+          "fg": "1"
+      },
+      {
+          "name": "Rhabarber",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,7",
+          "glu": "0,7",
+          "fg": "0,9"
+      },
+      {
+          "name": "Rindfleisch",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Roggenmehl (Durchschnitt)",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,4",
+          "glu": "0,4",
+          "fg": "0,9"
+      },
+      {
+          "name": "Rohschinken",
+          "kp": -1,
+          "de": -1,
+          "fru": "-",
+          "glu": "-",
+          "fg": "-"
+      },
+      {
+          "name": "Roqueforkäse",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Rosenkohl",
+          "kp": 0,
+          "de": 0,
+          "fru": "1,2",
+          "glu": "1,2",
+          "fg": "1"
+      },
+      {
+          "name": "Rosine",
+          "kp": "1",
+          "de": "1",
+          "fru": "31,6",
+          "glu": "31,2",
+          "fg": "1"
+      },
+      {
+          "name": "Rote Bete",
+          "kp": 0,
+          "de": 0,
+          "fru": "4,3",
+          "glu": "4,3",
+          "fg": "1"
+      },
+      {
+          "name": "Rote Drachenfrucht (rotes Fleisch)",
+          "kp": "1",
+          "de": "1",
+          "fru": "10,1",
+          "glu": "22,9",
+          "fg": "0,4"
+      },
+      {
+          "name": "Rote Drachenfrucht (weißes Fleisch)",
+          "kp": "1",
+          "de": "1",
+          "fru": "10,5",
+          "glu": "17,1",
+          "fg": "0,6"
+      },
+      {
+          "name": "Rotkohl",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,6",
+          "glu": "1,9",
+          "fg": "0,8"
+      },
+      {
+          "name": "Rotwein",
+          "kp": "1",
+          "de": 0,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Rucola",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,6",
+          "glu": "1,2",
+          "fg": "0,5"
+      },
+      {
+          "name": "Sahne (ohne Zusatzstoffe)",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "1"
+      },
+      {
+          "name": "Salami (Durchschnitt)",
+          "kp": 0,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Salat",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,6",
+          "glu": "0,5",
+          "fg": "1,2"
+      },
+      {
+          "name": "Sardellen",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Sardinen",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Sauerkirsche",
+          "kp": "1",
+          "de": "1",
+          "fru": "3,9",
+          "glu": "4,6",
+          "fg": "0,9"
+      },
+      {
+          "name": "Sauerkraut",
+          "kp": "1",
+          "de": "1",
+          "fru": "0,2",
+          "glu": "0,4",
+          "fg": "0,5"
+      },
+      {
+          "name": "Sauerrahm",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Schafmilch",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Schwarzwurzel",
+          "kp": 0,
+          "de": 0,
+          "fru": "0,9",
+          "glu": "0,8",
+          "fg": "1,1"
+      },
+      {
+          "name": "Schweinefleisch",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Seezunge",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Sellerie",
+          "kp": 0,
+          "de": -1,
+          "fru": "0,4",
+          "glu": "0,4",
+          "fg": "0,9"
+      },
+      {
+          "name": "Sojabohne",
+          "kp": 0,
+          "de": 0,
+          "fru": "2,8",
+          "glu": "2,8",
+          "fg": "1"
+      },
+      {
+          "name": "Sojamilch, ungesüßt (Durchschnitt)",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,8",
+          "glu": "0,8",
+          "fg": "1"
+      },
+      {
+          "name": "Sonnenblume, Samen",
+          "kp": -1,
+          "de": -1,
+          "fru": "1,4",
+          "glu": "1,4",
+          "fg": "1"
+      },
+      {
+          "name": "Sorghumhirse (Durchschnitt)",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,4",
+          "glu": "1,3",
+          "fg": "0,3"
+      },
+      {
+          "name": "Spargel",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,1",
+          "glu": "0,9",
+          "fg": "1,2"
+      },
+      {
+          "name": "Speiserübe",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,8",
+          "glu": "2,3",
+          "fg": "0,8"
+      },
+      {
+          "name": "Spinat",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,2",
+          "glu": "0,2",
+          "fg": "1"
+      },
+      {
+          "name": "Stachelbeere",
+          "kp": "1",
+          "de": 0,
+          "fru": "4,2",
+          "glu": "3,9",
+          "fg": "1,1"
+      },
+      {
+          "name": "Steckrübe",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,9",
+          "glu": "2,6",
+          "fg": "0,7"
+      },
+      {
+          "name": "Steinpilz",
+          "kp": 0,
+          "de": -1,
+          "fru": "0,3",
+          "glu": "0,3",
+          "fg": "1"
+      },
+      {
+          "name": "Sternfrucht",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,7",
+          "glu": "2",
+          "fg": "0,9"
+      },
+      {
+          "name": "Süßkartoffel",
+          "kp": 0,
+          "de": -1,
+          "fru": "2,3",
+          "glu": "2,4",
+          "fg": "0,9"
+      },
+      {
+          "name": "Süßkirsche",
+          "kp": "1",
+          "de": "1",
+          "fru": "12",
+          "glu": "13",
+          "fg": "0,9"
+      },
+      {
+          "name": "Teff",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,8",
+          "glu": "1",
+          "fg": "0,8"
+      },
+      {
+          "name": "Tomate (Durchschnitt)",
+          "kp": "1",
+          "de": 0,
+          "fru": "1,5",
+          "glu": "1,2",
+          "fg": "1,3"
+      },
+      {
+          "name": "Quark (Topfen)",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Trauben",
+          "kp": "1",
+          "de": "1",
+          "fru": "7,4",
+          "glu": "7,2",
+          "fg": "1"
+      },
+      {
+          "name": "Truthahn, Fleisch",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "1"
+      },
+      {
+          "name": "Verjus (Durchschnitt)",
+          "kp": -1,
+          "de": -1,
+          "fru": "1",
+          "glu": "-",
+          "fg": "-"
+      },
+      {
+          "name": "Vermicula, fangfrisch",
+          "kp": "1",
+          "de": "1",
+          "fru": "3",
+          "glu": "3",
+          "fg": "1"
+      },
+      {
+          "name": "Vollmilch",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Vollmilchpulver",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "0"
+      },
+      {
+          "name": "Wachtelei",
+          "kp": -1,
+          "de": -1,
+          "fru": "-",
+          "glu": "-",
+          "fg": "-"
+      },
+      {
+          "name": "Wassermelone",
+          "kp": "1",
+          "de": "1",
+          "fru": "4,1",
+          "glu": "2,2",
+          "fg": "1,9"
+      },
+      {
+          "name": "Weinessig",
+          "kp": "1",
+          "de": 0,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Weintrauben (rot, grün)",
+          "kp": "1",
+          "de": "1",
+          "fru": "8,2",
+          "glu": "7,3",
+          "fg": "1,1"
+      },
+      {
+          "name": "Weißkohl",
+          "kp": "1",
+          "de": 0,
+          "fru": "1,9",
+          "glu": "2,2",
+          "fg": "0,9"
+      },
+      {
+          "name": "Weißwein",
+          "kp": "1",
+          "de": 0,
+          "fru": "0,4",
+          "glu": "0,4",
+          "fg": "1,1"
+      },
+      {
+          "name": "Weizen, Korn",
+          "kp": -1,
+          "de": -1,
+          "fru": "0,2",
+          "glu": "0,2",
+          "fg": "1,3"
+      },
+      {
+          "name": "Weizenbier (Durchschnitt)",
+          "kp": "1",
+          "de": "1",
+          "fru": "0",
+          "glu": "0",
+          "fg": "0,5"
+      },
+      {
+          "name": "Whisky",
+          "kp": -1,
+          "de": 0,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Wirsing",
+          "kp": "1",
+          "de": -1,
+          "fru": "1,8",
+          "glu": "2",
+          "fg": "0,9"
+      },
+      {
+          "name": "Ziegenmilch",
+          "kp": -1,
+          "de": -1,
+          "fru": "0",
+          "glu": "0",
+          "fg": "-"
+      },
+      {
+          "name": "Zimt",
+          "kp": -1,
+          "de": -1,
+          "fru": "1,1",
+          "glu": "1,1",
+          "fg": "1,1"
+      },
+      {
+          "name": "Zitrone",
+          "kp": 0,
+          "de": -1,
+          "fru": "1,1",
+          "glu": "1,2",
+          "fg": "0,9"
+      },
+      {
+          "name": "Zucchini",
+          "kp": -1,
+          "de": -1,
+          "fru": "1,2",
+          "glu": "1,1",
+          "fg": "1,1"
+      },
+      {
+          "name": "Zuckermelone",
+          "kp": "1",
+          "de": 0,
+          "fru": "3,2",
+          "glu": "2,6",
+          "fg": "1,2"
+      },
+      {
+          "name": "Zwiebel",
+          "kp": "1",
+          "de": 0,
+          "fru": "2,3",
+          "glu": "2,6",
+          "fg": "0,9"
+      }
+  ];
+
+
+    var template = document.querySelectorAll('#food')[0].innerHTML;
+
+
+  food.map(function(value, index){
+
+      switch (food[index].kp) {
+          case -1:
+              food[index].kpGood = true;
+              break;
+          case 0:
+              food[index].kpMedium = true;
+              break;
+          default:
+              food[index].kpBad = true;
+      }
+      switch (food[index].de) {
+          case -1:
+              food[index].deGood = true;
+              break;
+          case 0:
+              food[index].deMedium = true;
+              break;
+          default:
+              food[index].deBad = true;
+      }
+  });
+
+    var html = Mustache.to_html(template, {
+        items: food
+    });
+    document.querySelectorAll('#food')[0].innerHTML = (html);
+
+
+</script>
+
+
+
+<script type="text/javascript" class="init">
+
+
+    var options = {
+        valueNames: [
+            'name',
+            { name: 'kp', attr: 'data-kp' },
+            { name: 'de', attr: 'data-de' }
+            ]
+    };
+
+    var userList = new List('food', options);
+
+
+</script>
+</body></html>
